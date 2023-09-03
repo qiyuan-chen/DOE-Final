@@ -1,0 +1,283 @@
+
+%-----------------------------------------------------------------------
+%中国科学: 数学 中文模板, 请直接用 XeLaTeX 编译
+% SCIENTIA SINICA~~Mathematica
+%-----------------------------------------------------------------------
+
+\documentclass{SCIA2018cn}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 作者附加的定义
+%%% 常用环境已经加载好, 不需要重复加载
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareMathOperator*{\esssup}{ess\,sup}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 开始
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\dl{\displaystyle}
+%\numberwithin{equation}{section}
+%\newcommand{\upcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}}
+
+\newtheoremstyle{mystyle}{0pt}{0pt}{\normalfont}{1.82em}{\bf\heiti\color{blue}\zihao{5}}{}{1.29em}{}
+
+
+\theoremstyle{mystyle}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}{定义}[section]
+\newtheorem{lemma}{引理}[section]
+\newtheorem{corollary}{推论}[section]
+\newtheorem{proposition}{命题}[section]
+\newtheorem{conjecture}{猜想}[section]
+\newtheorem{remark}{注}[section]
+\newtheorem{example}{例}[section]
+\newtheorem{problem}{问题}[section]
+\newtheorem{assumption}{假设}[section]
+\newtheorem{conditions}{条件}[section]
+\newtheorem{property}{性质}[section]
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Authors do not modify the information below
+%%% 作者不需要修改此处信息
+%科学与技术前沿论坛
+\ArticleType{论~~~文}%论~~~文
+%\ArticleType{综~~~述}{}
+%\SpecialTopic{自然科学基金项目进展专栏}%专题或专刊虚拟现实前沿技术专刊
+%\SubTitle{献给董光昌教授90 华诞}%专刊说明
+%\Luntan{中国科学院学部\quad 科学与技术前沿论坛}
+\Year{2018}
+\Vol{48}
+\No{?}
+\BeginPage{1}
+\DOI{10.1360/N012017-XXXX}%doi号
+%\ReceiveDate{2015--00--00}
+%\AcceptDate{2015--00--00}
+%\OnlineDate{2015--00--00}
+\ReceiveDate{2018-XX-XX} % 收稿日期
+\AcceptDate{2018-XX-XX} % 接受日期
+\OnlineDate{2018-01-XX} % 网络出版日期
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{基于正交设计与投票集成的贝叶斯优化方法}{基于正交设计与投票集成的贝叶斯优化方法}
+
+\entitle{Bayesian Optimization Method Based on Latin Hypercube Design and Voting Ensemble}{Bayesian Optimization Method Based on Latin Hypercube Design and Voting Ensemble}%英文题目
+
+\author[1]{陈启源}{qiyuanchen@mails.ccnu.edu.cn}{}%作者及邮箱
+\enauthor[]{Qiyuan Chen}{}%名前姓后,首字母大写其他小写
+
+\address[1.]{数学与统计学学院，华中师范大学，武汉，中国 430079;}%作者单位, 城市 邮编
+%\enaddress[1]{Address, City {\rm 000000}, Country}
+
+
+
+% \Foundation{国家自然科学基金(批准号: 1080000)资助项目}%基金及基金的批准号
+
+\AuthorMark{陈启源}%第一作者等
+
+%\AuthorCitation{姓名, 姓名}
+\enAuthorCitation{Chen Q Y}%引用条的作者姓名
+
+
+\abstract{随着机器学习和深度学习等技术的迅猛发展，超参数的选择成为影响模型性能的重要因素。传统的网格搜索和随机搜索方法存在效率低下和未充分利用已有评估结果的问题。贝叶斯优化作为一种更好的方法，通过代理模型和贝叶斯推断选择下一个最有希望的超参数配置。本文通过引入正交设计阵，实现对贝叶斯优化设置空间的均匀高效采样。同时，采用投票集成方法综合不同设置组合的最终结果，以期获得更准确和鲁棒的超参数配置。通过实验证明，所提出的方法能够有效提高超参数优化的性能，并为机器学习和深度学习模型的超参数优化，尤其是对于大规模模型，提供了一种新的视角。}%中文摘要
+
+\enabstract{With the rapid development of machine learning and deep learning technologies, the selection of hyperparameters has become a crucial factor affecting model performance. Traditional methods such as grid search and random search suffer from inefficiency and underutilization of existing evaluation results. Bayesian optimization, as a superior approach, leverages surrogate models and Bayesian inference to select the next most promising hyperparameter configuration. In this paper, we introduce orthogonal experimental design to construct a design matrix, enabling uniform and efficient sampling of the Bayesian optimization search space. Additionally, we employ a voting ensemble method to combine the final results of different configuration combinations, aiming to obtain more accurate and robust hyperparameter configurations. Through empirical validation, we demonstrate that the proposed method effectively enhances the performance of hyperparameter optimization and provides a novel perspective for optimizing hyperparameters in machine learning and deep learning models, particularly for large-scale models.}%英文摘要
+
+\keywords{中文关键词\quad 中文关键\quad 中文关键}%关键词一般3~8个
+
+\enkeywords{keyword1, keyword2, keyword3}%英文关键词3~8个
+
+\MSC{60F17, 60F15, 60A86}%主题分类号
+
+\enMSC{60F17, 60F15, 60A86}%主题分类号
+
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%下面为正文部分%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%正文中图、表、公式、定理等需加标签\label{},引用时\ref{}
+%正文中的概率、期望和方差需用白正体
+%正文中的定理、引理等需用环境定义
+
+\section{引言}
+
+机器学习是一种让计算机从数据中学习规律和知识的方法，它在各个领域都有广泛的应用和重要的价值。深度学习是机器学习的一个分支，它利用多层神经网络来建模复杂的非线性关系，从而实现高效的特征提取和表征学习\cite{LeCun2015DeepL,Murphy2012MachineL}。近些年来，深度学习在图像识别、自然语言处理、语音识别等任务上取得了令人瞩目的成果，极大地推动了人工智能的发展\cite{Krizhevsky2012ImageNetCW,Vaswani2017AttentionIA}。
+
+然而，深度学习模型的性能往往受到超参数的影响，超参数是指在模型训练之前需要设定的参数，如学习率、批量大小、优化器类型等。超参数的选择对于模型的收敛速度、泛化能力和最终效果都有重要的作用，但是超参数的搜索空间通常很大，传统的超参数优化方法，如网格搜索和随机搜索，尽管被广泛使用，但在效率和准确性方面存在一定的局限性。网格搜索通过枚举所有可能的超参数组合来寻找最优解，然而，当超参数空间较大时，搜索空间呈指数级增长，使得其效率显著下降。随机搜索通过在超参数空间中随机采样一组超参数组合来进行优化，但由于其随机性，可能无法找到全局最优解。因此，如何自动化地优化超参数，提高深度学习模型的性能，是一个具有挑战性和实用性的研究问题。
+
+为了克服传统优化方法的局限性，贝叶斯优化成为一种更好的方法。贝叶斯优化通过建立目标函数的代理模型，并利用贝叶斯推断来选择下一个要评估的超参数配置。相比于传统方法，贝叶斯优化能够在较少的评估次数内找到更优的超参数配置，提高了优化效率。此外，贝叶斯优化还能够通过建模不确定性来全面理解超参数配置的性能，为决策提供更可靠的依据。
+
+然而，贝叶斯优化的应用也存在一些弊端。其中之一是代理模型的选择，不同的代理模型对结果的预测能力有所差异。另外，选择合适的初始点也对最终结果产生重要影响。此外，获取函数的选择也是影响贝叶斯优化性能的关键因素。这些因素使得贝叶斯优化本身成为一种“黑盒”，尤其是在当今流行的大规模模型中，直接应用贝叶斯优化可能不能获得最佳结果。这是因为大模型超参数维度较高，受到初始点等设置的影响较大，但尝试不同的获取函数、初始点又会耗费大量的时间。因此，在大规模模型中，通常会先在小规模模型上选择用于贝叶斯优化的初始点、获取函数以及代理函数，然后将得到的最佳配置应用于大模型中，以节省计算资源并提高效率。
+
+为了克服以上的困难，本文提出了一种基于正交设计的方法来构建设计阵，以设计出多样化的贝叶斯优化参数组合。正交设计的方法能够在超参数空间中均匀且高效地采样，避免了传统方法中可能存在的过度聚焦或重叠采样的问题。通过使用正交设计，我们能够获得一系列多样化的参数配置，覆盖贝叶斯优化器设置空间的不同区域。接下来，本文采用投票集成的方法对不同超参数组合的最终结果进行综合。投票集成是一种常用的集成学习技术，它通过汇集多个模型的预测结果来获得最终的决策。在本文中，我们将不同的贝叶斯优化参数组合作为独立模型，并通过投票的方式进行集成。这样做的目的是充分利用每个参数组合的优势，以期获得更准确和鲁棒的超参数配置，避免初始点、代理函数或者获取函数的选择使得贝叶斯优化进入局部最优情况。
+
+为了验证所提出方法的有效性，我们进行了一系列实验。首先，我们选择了几个常用的机器学习和深度学习任务，并使用传统的网格搜索、随机搜索和贝叶斯优化作为对比方法。然后，我们基于我们提出的基于正交设计和投票集成的贝叶斯优化方法进行了实验。实验结果表明，相比于传统的网格搜索和随机搜索方法，我们提出的方法在相同的评估次数下能够找到更优的超参数配置。与传统的贝叶斯优化方法相比，我们的方法在搜索空间的探索上更全面，能够发现更多的局部最优解。通过投票集成的方式，我们能够更好地利用不同超参数组合的优势，从而获得更准确和鲁棒的超参数配置。这些实验证明了我们提出方法的有效性，并证明了基于正交设计和投票集成的贝叶斯优化方法在超参数优化中的潜力。这一研究为解决实际应用中的超参数优化问题提供了一种可行且高效的新视角。
+
+\section{相关工作}
+
+
+\section{方法}
+
+本方法章节旨在介绍基于拉丁正交试验设计（Orthogonal Experimental Design）与贝叶斯优化（Bayesian optimization）的方法，并结合投票集成（voting ensemble）的思想来改进超参数优化。我们的目标是提升机器学习和深度学习模型的超参数优化性能，尤其是针对大规模模型。首先，我们介绍贝叶斯优化的基本原理，并说明其相比传统的网格搜索和随机搜索方法的优势。接下来，我们介绍了将正交设计和贝叶斯优化相结合的创新方法，此外，我们引入了投票集成的概念，即通过汇总不同超参数配置的结果来获得最终的、更准确和鲁棒的配置。我们讨论了这种集成技术的原理以及用于组合个体模型输出的方法。
+
+\subsection{贝叶斯优化}
+
+当涉及到超参数搜索时，贝叶斯优化是一种强大而高效的方法。它基于贝叶斯定理和高斯过程模型，通过不断迭代地更新先验分布和观测结果来逐步收敛到全局最优解。下面是贝叶斯优化用于超参数搜索的基本方法的数学表达：
+
+假设我们的目标是最小化一个黑箱函数$f(x)$，其中$x$表示超参数向量。我们的目标是找到使$f(x)$最小化的$x$值。贝叶斯优化的核心思想是在每次迭代中，根据当前的先验知识和观测结果，选择一个新的$x$进行评估，以便能够在下一次迭代中获得更好的结果。
+
+贝叶斯优化的核心组成部分包括先验模型和采样策略。先验模型使用高斯过程来建模未知函数$f(x)$的分布。高斯过程可以通过先验均值函数$m_0(x)$和协方差函数$k(x,x')$来描述：
+
+\begin{equation}
+f(x)\sim\mathcal{GP}(m_0(x),k(x,x'))
+\end{equation}
+
+
+通过观测一些初始点的函数值，我们可以更新先验模型为后验模型，反映出目前已知的信息。后验模型通过观测数据的加权来估计$f(x)$的分布。根据贝叶斯定理，后验分布可以表示为：
+\begin{equation}
+P(f(x)|\mathcal{D})\propto P(\mathcal{D}|f(x))P(f(x))
+\end{equation}
+
+其中，$\mathcal{D}$表示已观测到的数据集。
+
+一旦得到后验模型，我们可以使用采样策略来选择下一个要评估的$x$值。典型的策略是使用期望改进（Expected Improvement）或置信区间（Confidence Bound）来平衡探索和利用的需求。期望改进是指选择下一个$x$值，以便在当前最佳观测值的基础上，最大化在新的$x$值处的期望改进。置信区间则根据后验分布的不确定性来选择下一个$x$值，以便在不确定性较大的地方进行探索。
+
+通过不断迭代更新先验模型、选择新的$x$值进行评估和更新观测结果，贝叶斯优化能够逐步收敛到全局最优解，从而有效地搜索超参数空间。这种方法相对于传统的网格搜索或随机搜索，在高维空间中更具效率和准确性。
+
+总结而言，贝叶斯优化利用贝叶斯定理和高斯过程模型，通过不断更新先验模型和选择新的$x$值来搜索超参数空间。这种方法在优化黑箱函数时具有良好的性能和效率。
+
+
+\subsection{正交试验设计}
+
+正交试验设计（Orthogonal Experimental Design）是一种重要的实验设计方法，在工业中广泛应用于优化系统性能和参数调优。其基本思想是通过构建正交矩阵，充分利用有限的实验次数，系统地探索多个因素对系统行为的影响，从而提高实验效率和准确性。正交试验设计的数学表述如下：
+
+假设我们有$k$个因素，每个因素具有$m$个水平。我们的目标是构建一个$n \times k$的正交矩阵，其中$n$表示实验次数。正交矩阵的每一行代表一个试验条件，每一列代表一个因素，而矩阵中的元素则表示对应因素的水平。正交矩阵的构建需要满足以下两个关键条件：正交性：试验矩阵中的任意两列之间应满足正交性条件，即它们之间的线性相关性应最小化。这样做可以减少因素间的相互影响，使得实验结果更具可靠性。空间填充性：试验矩阵应能够全面覆盖因素的不同水平组合，以捕捉各种可能的因素影响。通过保证每个因素的每个水平在试验矩阵中均匀分布，可以获得可靠的参数估计和优化结果。
+
+通过执行正交试验设计并分析实验结果，研究人员可以识别出主要影响因素、因素交互作用以及最佳的参数配置。这种系统性的方法可以显著减少实验次数，提高实验效率，并为系统优化和参数调优提供可靠的指导。
+
+\subsection{基于投票的集成方法}
+
+基于投票的集成方法（Voting-based Ensemble Methods）是一类在备受关注的机器学习模型方法，旨在提高模型的泛化能力和鲁棒性。其基本思想是通过结合多个基学习器的预测结果，通过投票机制来进行最终的决策。这种集成方法能够减少单个学习器的不确定性，并显著提高整体性能。下面是基于投票的集成方法的基本思想和方法：
+
+假设我们有一个训练数据集$D=\{(x_1,y_1),(x_2,y_2),...,(x_n,y_n)\}$，其中
+$x_i$表示输入特征，$y_i$表示对应的标签。我们的目标是构建一个强大的集成模型$H(x)$，能够在未知数据上做出准确的预测。
+
+基于投票的集成方法通过结合多个基学习器的预测结果来进行最终的预测。假设我们有$M$个基学习器，分别表示为$h_1(x),h_2(x),\dots,h_M(x)$，每个基学习器都可以独立地对输入样本进行预测，并输出一个预测标签。
+
+
+\bibliographystyle{elsarticle-num}
+\bibliography{reference}
+
+
+% \begin{thebibliography}{99}  %%文后出现的参考文献在文中都必须引用
+
+% \bibitem{1} Chung K L, Erd\"os P. On the application of the Borel-Cantelli lemma. Trans Amer Math Soc, 1952, 72: 179--179 % doi: 10.1090/S0002-9947-1952-0045327-5
+
+% \bibitem{2} K$\hat{\rm o}$saku Y. Functional Analysis, 6th ed. Heidelberg: Springer-Verlag, 1980, 132--136
+
+% \bibitem{3} de Jong A J. Moduli of abelian varieties and Dieudonn\'e modules of finite group schemes. PhD Thesis. Utrecht: University  of Utrecht, 1992
+
+% \end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 附录章节, 自动从A编号, 以\section开始一节
+%%% 非必选
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{appendix}
+%\section{}
+%\end{appendix}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 自动生成英文标题部分
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeentitle
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\end{document}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 本模板使用的latex排版示例
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% 章节
+\section{}
+\subsection{}
+\subsubsection{}
+
+%%%定理使用
+\begin{theorem}\label{theorem1.1}
+*
+\end{theorem}
+正中文引用定理时需用定理\ref{theorem1.1}格式.  引理、定义、猜想等类似修改.
+ 
+ %%% 单行公式
+%%% 可在文中使用 (\ref{eq1}) 引用公式编号
+\begin{align}\label{eq1}
+A(d,f)=d^{l}a^{d}(f),
+\end{align}
+
+%%% 不编号的单行公式
+\begin{align*}%不编号的公式加*号
+A(d,f)=d^{l}a^{d}(f),
+\end{align*}
+
+%%% 公式组
+\begin{align}
+\nonumber%\nonumber表示不加公式号
+&X=[x_{11},x_{12},\ldots,x_{ij},\ldots ,x_{n-1,n}]^{\rm T},\\
+\nonumber
+&\varepsilon=[e_{11},e_{12},\ldots ,e_{ij},\ldots ,e_{n-1,n}],\\
+\nonumber
+&T=[t_{11},t_{12},\ldots ,t_{ij},\ldots ,t_{n-1,n}].
+\end{align}
+
+%%% 条件公式
+\begin{align} \label{eq1}
+\sum_{j=1}^{n}x_{ij}-\sum_{k=1}^{n}x_{ki}=
+\begin{cases}
+1,& i=1,\\
+0,& i=2,\ldots ,n-1,\\
+-1,& i=n.
+\end{cases}
+\end{align}
+ 
+%%% 图
+%%% 可在文中使用图\ref{fig1}引用图编号
+\begin{figure}[!h]
+\centering
+\includegraphics{example-image.pdf}
+\cnenfigcaption{中文图题}{}
+\label{fig1}
+\end{figure}
+
+ 
+
+%%% 简单表格
+%%% 可在文中使用 表\ref{tab1} 引用表编号
+\begin{table}[!h]
+\cnentablecaption{表题}{}
+\label{tab1}
+\footnotesize
+\tabcolsep 49pt %space between two columns. 用于调整列间距
+\begin{tabular*}{cccc}
+\toprule
+  Title a & Title b & Title c & Title d \\\hline
+  Aaa & Bbb & Ccc & Ddd\\
+  Aaa & Bbb & Ccc & Ddd\\
+  Aaa & Bbb & Ccc & Ddd\\
+\bottomrule
+\end{tabular*}
+\end{table}
+ 
+%%% 算法
+%%% 可在文中使用 算法\ref{alg1} 引用算法编号
+\begin{algorithm}
+%\floatname{algorithm}{Algorithm}%更改算法前缀名称
+\footnotesize
+\caption{算法标题}
+\label{alg1}
+\begin{algorithmic}[1]
+  *
+\end{algorithmic}
+\end{algorithm}
